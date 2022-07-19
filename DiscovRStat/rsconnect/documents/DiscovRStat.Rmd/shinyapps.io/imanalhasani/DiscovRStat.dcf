@@ -1,0 +1,13 @@
+name: DiscovRStat
+title: DiscovRStat
+username:
+account: imanalhasani
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6661298
+bundleId: 6110600
+url: https://imanalhasani.shinyapps.io/DiscovRStat/
+when: 1658206201.52968
+lastSyncTime: 1658206201.5297
+asMultiple: FALSE
+asStatic: FALSE
