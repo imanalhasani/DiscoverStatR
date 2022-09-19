@@ -1,5 +1,5 @@
 ---
-title: "Discover RStats"
+title: "DiscovRStat"
 author:
   - name: <a href="https://github.com/imanalhasani/DiscoverStatR">Iman Al Hasani, PhD</a>\newline
 output: 
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Welcome
 
-This is RStat2100, the R laboratory materials for the course STAT2100: Discovering Statistics using R. The course is offered by the department of Statistics at <a href="https://www.squ.edu.om" target="_blank">Sultan Qaboos university</a>. R is a popular choice in data analytics for statistical computing and graphics that is widely used in sciences and social sciences. RStat2100 introduces the R software environment, descriptive statistics, graphical exploration of data and basic inferential statistic such as analysis of relationships among variables using correlation and regression basic concepts.
+This is DiscovRStat, the R laboratory materials for the course STAT2100: Discovering Statistics using R. The course is offered by the department of Statistics at <a href="https://www.squ.edu.om" target="_blank">Sultan Qaboos university</a>. R is a popular choice in data analytics for statistical computing and graphics that is widely used in sciences and social sciences. DiscovRStat introduces the R software environment, descriptive statistics, graphical exploration of data and basic inferential statistic such as analysis of relationships among variables using correlation and regression basic concepts.
 
 If this is the first time you hear about R, the following short video created by R Consortium provides an overview about the program, its applications and what is used for.
 
@@ -52,4 +52,4 @@ Let us start your first R code! The following box is an empty code chunk provide
 
 ```{r welcome, exercise=TRUE}
 ```
-![](images/happyR.png){style="float: right; width: 400px; height: 200px;  "} Congrats, you've run your first line of code!
+![](images/happyR.png){style="float: right; width: 200px; height: 200px;  "} Congrats, you've run your first line of code!
