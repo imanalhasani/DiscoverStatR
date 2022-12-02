@@ -36,11 +36,12 @@ p.caption {
    font-color: dimgray
 }
 
-/*body {
-  background-image: url('bg5.png');
+body {
+  background-image: url('images/bg.PNG');
   background-attachment: fixed;
-  background-size: 100%;
-}*/
+  background-repeat: no-repeat;
+  background-size:cover;
+}
 
 p {
   padding-top: 10px;
