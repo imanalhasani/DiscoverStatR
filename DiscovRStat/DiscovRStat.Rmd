@@ -15,6 +15,8 @@ description: "SQU Unerviersity Elective Course"
 # packages
 library(learnr)
 library(tidyverse)
+library(modeest)
+library(DescTools)
 # hide non-exercise code chunks
 knitr::opts_chunk$set(echo = FALSE)
 # import StudentsPerformance.csv
@@ -348,7 +350,7 @@ mtcars[c(1,3),]# returns the values in the first and third rows
 Subsets of a dataset can be extracted based on logical evaluation or comparison using logical operators. Here are some of the most common logical operators:
 
 | less than | less than or equal | greater than | greater than or equal | exactly equal | not equal | and | or  |
-|-----------|--------------------|--------------|-----------------------|---------------|-----------|-----|-----|
+|---------|---------|---------|---------|---------|---------|---------|---------|
 | \<        | \<=                | \>           | \>=                   | ==            | !=        | &   | \|  |
 
 ##### Exercise:
@@ -707,3 +709,132 @@ std_perf_exam %>%
 ```
 
 ## Discover Statistics: Tabular
+
+Data tabulation refers to summarizing and organizing data in a table using descriptive statistical measures such as frequency, measures of central tendency, measures of variation and measures of position. Tabulation is initial step in statistical data analysis that helps to understand, describe and explore data. We have employed some statistical measures such as minimum, maximum, mean and standard scores in the previous topic. Here, we discuss the statistical measures in more detail.
+
+#### Frequency Table:
+
+The frequency table is an organization of data values in a table form using classes (or groups) and frequencies (or counts). It is used to group both numerical or non-numerical data, although it is more helpful to explore nun-numerical data values. It is also useful to group large set if numerical values. There are different ways to construct frequency tables using R base functions or CRAN packages such as tidyverse package.
+
+Consider the students Performance data: `std_perf_exam`, to tabulate non-numerical variables, use `tally()` with `group_by()`. Alternatively, use `count()` function.
+
+##### Exercise:
+
+> Tabulate `gender`, `lunch` and `test_preperation_test` .
+
+```{r table-gender-lunch-test, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  group_by(gender, lunch, test_preparation_course) %>%
+  tally() 
+
+## to use count() click Hint
+```
+
+```{r table-gender-lunch-test-hint}
+std_perf_exam %>% 
+  count(gender, lunch, test_preparation_course)
+```
+
+#### Measures of Central Tendency:
+
+Measures of central tendency describe the center of data. The three common measures are:
+
+-   Mean: the sum of the values divided by the total number of observations, $\bar{X}=\frac{\sum X}{n}$. To find the mean value, use `mean()` R base function.
+
+##### Exercise:
+
+> Find the mean scores of `math_score`, `reading_score` and `writing_score` and summarize the results in a table.
+
+```{r mean-scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(avg_math= mean(math_score), 
+            avg_reading= mean(reading_score),
+            avg_writing= mean(writing_score))
+
+## click Hint to get the mean of each variable sepretely 
+```
+
+```{r mean-scores-hint}
+mean(std_perf_exam$math_score)
+mean(std_perf_exam$reading_score)
+mean(std_perf_exam$writing_score)
+```
+
+-   Median: the midpoint of numerical set of values. ]To find the median value, use `median()` R base function.
+
+##### Exercise:
+
+> Find the median scores of `math_score`, `reading_score` and `writing_score` and summarize the results in a table.
+
+```{r median-scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(mid_math= median(math_score), 
+            mid_reading= median(reading_score),
+            mid_writing= median(writing_score))
+
+## click Hint to get the median of each variable sepretely 
+```
+
+```{r median-scores-hint}
+median(std_perf_exam$math_score)
+median(std_perf_exam$reading_score)
+median(std_perf_exam$writing_score)
+```
+
+-   Mode: the value that occurs most often in the data set. There is no R built-in function for finding mode. We can use the frequency table and select the value corresponding to the maximum frequency, or install a CRAN package such as `modeest` or `DescTools`. Consider installation of `DescTools`, package, the `Mode()` function is used to find the mode value for numerical or character variables.
+
+    ``` r
+    install.packages("DescTools")
+    library(DescTools)
+    ```
+
+##### Exercise:
+
+> Find the mode value of `math_score`, `reading_score` and `writing_score` and summarize the results in a table.
+
+```{r mode_scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(mode_math= Mode(math_score), 
+            mode_reading= Mode(reading_score),
+            mode_writing= Mode(writing_score))
+
+## click Hint to get the Mode of each variable sepretely 
+```
+
+```{r mode_scores-hint}
+## To get the mode value with its frequency
+Mode(std_perf_exam$math_score)
+Mode(std_perf_exam$reading_score)
+Mode(std_perf_exam$writing_score)
+## To get the mode value only
+Mode(std_perf_exam$math_score)[1]
+Mode(std_perf_exam$reading_score)[1]
+Mode(std_perf_exam$writing_score)[1]
+```
+
+##### Exercise:
+
+> Find the mode value of all character variables in `std_perf_exam` data set.
+
+```{r mode_nonnumeric, exercise=TRUE, exercise.eval=FALSE}
+#Click Hint!
+```
+
+```{r mode_nonnumeric-hint}
+#gender
+Mode(std_perf_exam$gender)
+#ethnicity
+Mode(std_perf_exam$ethnicity)
+#parent_education_level
+Mode(std_perf_exam$parent_education_level)
+#lunch
+Mode(std_perf_exam$lunch)
+#test_preparation_course
+Mode(std_perf_exam$test_preparation_course)
+```
+
+#### Measures of Variation:
+
+#### Measures of Position:
+
+#### 
