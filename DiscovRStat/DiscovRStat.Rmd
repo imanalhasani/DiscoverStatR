@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = FALSE)
 # import StudentsPerformance.csv
 std_perf <- read.csv("StudentsPerformance.csv")
 std_perf_exam <- read_csv("StudentsPerformance.csv")
+fit_model <- lm(math_score ~ writing_score, data=std_perf_exam)
 ```
 
 ## Welcome
@@ -350,7 +351,7 @@ mtcars[c(1,3),]# returns the values in the first and third rows
 Subsets of a dataset can be extracted based on logical evaluation or comparison using logical operators. Here are some of the most common logical operators:
 
 | less than | less than or equal | greater than | greater than or equal | exactly equal | not equal | and | or  |
-|---------|---------|---------|---------|---------|---------|---------|---------|
+|-----------|--------------------|--------------|-----------------------|---------------|-----------|-----|-----|
 | \<        | \<=                | \>           | \>=                   | ==            | !=        | &   | \|  |
 
 ##### Exercise:
@@ -737,9 +738,9 @@ std_perf_exam %>%
 
 #### Measures of Central Tendency:
 
-Measures of central tendency describe the center of data. The three common measures are:
+Measures of central tendency describe the center of data. The three common measures of center are:
 
--   Mean: the sum of the values divided by the total number of observations, $\bar{X}=\frac{\sum X}{n}$. To find the mean value, use `mean()` R base function.
+-   **Mean**: the sum of the values divided by the total number of observations, $\bar{x}=\frac{\sum x}{n}$. To find the mean value in R, use `mean()` base function.
 
 ##### Exercise:
 
@@ -760,7 +761,7 @@ mean(std_perf_exam$reading_score)
 mean(std_perf_exam$writing_score)
 ```
 
--   Median: the midpoint of numerical set of values. ]To find the median value, use `median()` R base function.
+-   **Median**: the midpoint of numerical set of values. To find the median value in R, use `median()` base function.
 
 ##### Exercise:
 
@@ -781,7 +782,7 @@ median(std_perf_exam$reading_score)
 median(std_perf_exam$writing_score)
 ```
 
--   Mode: the value that occurs most often in the data set. There is no R built-in function for finding mode. We can use the frequency table and select the value corresponding to the maximum frequency, or install a CRAN package such as `modeest` or `DescTools`. Consider installation of `DescTools`, package, the `Mode()` function is used to find the mode value for numerical or character variables.
+-   **Mode**: the value that occurs most often in the data set. There is no R built-in function for finding mode. We can use the frequency table and select the value corresponding to the maximum frequency, or install a CRAN package such as `modeest` or `DescTools`. Consider the **installation of `DescTools`** package, the `Mode()` function is used to find the mode value for numerical or character variables.
 
     ``` r
     install.packages("DescTools")
@@ -835,6 +836,342 @@ Mode(std_perf_exam$test_preparation_course)
 
 #### Measures of Variation:
 
+Measures of variation describe the amount of variability or spread in a set of data. The common measures of variation are:
+
+-   **Variance**: the average of squared deviations, where deviation is the difference between each data value $x$ from the mean $\bar{x}$, i.e. deviation= \$x-\\bar{x}\$. Therefore the sample variance is given by $s^2 = \frac {(x-\bar{x})^2}{n-1}$. To find the variance value in R, use `var()` base function.
+
+##### Exercise:
+
+> Find the variance of `math_score`, `reading_score` and `writing_score` and summarize the results in a table.
+
+```{r var-scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(var_math= var(math_score), 
+            var_reading= var(reading_score),
+            var_writing= var(writing_score))
+
+## click Hint to get the variance of each variable sepretely 
+```
+
+```{r var-scores-hint}
+var(std_perf_exam$math_score)
+var(std_perf_exam$reading_score)
+var(std_perf_exam$writing_score)
+```
+
+-   **Standard deviation**: the square root of the average of squared deviations. The sample standard deviation is given by $s=\sqrt{s^2}$ . Both variance and standard deviation measure the spread of the data from the mean. However, given that the data values are at, below or above the center, then $\sum(x-\bar x)=0$. Therefore, the devotions are squared but this affects the unit of the original values, and hence the square root of the variance is used to put the spread measure in the same unit as the original values. To find the standard deviation value in R, use `sd()` base function.
+
+##### Exercise:
+
+> Find the standard deviation of `math_score`, `reading_score` and `writing_score` and summarize the results in a table.
+
+```{r sd-scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(sd_math= sd(math_score), 
+            sd_reading= sd(reading_score),
+            sd_writing= sd(writing_score))
+
+## click Hint to get the standard deviation of each variable sepretely 
+```
+
+```{r sd-scores-hint}
+sd(std_perf_exam$math_score)
+sd(std_perf_exam$reading_score)
+sd(std_perf_exam$writing_score)
+```
+
+-   **Range**: the difference between the maximum and minimum values, i.e. Range$=$ maximum value $-$ minimum value. To find the range value in R, use `max()` and `min()` functions or `range()`. function
+
+##### Exercise:
+
+> Find the range of `math_score`, `reading_score` and `writing_score` and summarize the results in a table.
+
+```{r range-scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(range_math= max(math_score)- min(math_score), 
+            range_reading= max(reading_score)-min(reading_score),
+            range_writing= max(writing_score)- min(writing_score))
+
+## click Hint to get the range values using range() function
+```
+
+```{r range-scores-hint}
+std_perf_exam %>% 
+  summarize(range_math= range(math_score)[2]- range(math_score)[1], 
+            range_reading= range(reading_score)[2]-range(reading_score)[1],
+            range_writing= range(writing_score)[2]- range(writing_score)[1])
+
+## Notice that range() function returns two values maximum and minimum
+### minimum= range()[1]
+### maximum= range()[2]
+range(std_perf_exam$math_score)
+range(std_perf_exam$reading_score)
+range(std_perf_exam$writing_score)
+```
+
 #### Measures of Position:
 
-#### 
+Measures of position identify the position of a data value in a data set. There are various measures of position such as standard scores (z-scores), percentiles and quartiles.
+
+-   **Standard Score (or z-score)**: A measure of how many standard deviation units a data value $x$ is above or below the mean $\bar{x}$, i.e. z-score$=$ \frac{x-\bar{x}}{s}. If a z-score is zero, then the data value $x$ is the same as the mean $\bar{x}$. If a z-score is positive, then the data value $x$ is above the mean $\bar{x}$. If a z-score is negative, then the data value $x$ is below the mean $\bar{x}$. Use `scale()` function in R to get the standard score or use the z-score formula.
+
+##### Exercise:
+
+> Find the standard score of `math_score`.
+
+```{r z-scores, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  mutate(zscore_math= scale(math_score))%>%
+  select(math_score, zscore_math)
+```
+
+-   **Percentiles**: Measures divide the data into 100 equal groups. **The** $p^{\text{th}}$ **percentile is the value that is greater than** $p\%$ **of the data values in a set of data after ranking them**. Use `quantile()` function in R to find a specified percentile.
+
+##### Exercise:
+
+> Find the $80^{\text{th}}$ percentile of the `math_score` , `reading_score` and `writing_score`. Summarize the result in a table.
+
+```{r p-percntile, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(p_math= quantile(math_score, 0.80), 
+            p_writing= quantile(writing_score,0.80),
+            p_reading= quantile(reading_score, 0.80))
+```
+
+The $80^{\text{th}}$ percentile of the `math_score` is 79, meaning that 80% of the students scored 79 or less and 20% scored above 79.
+
+-   **Quartiles**: Measures divide the data into 4 equal groups. The first quartile is the $25\text{th}$ percentile and the second quartile is the $50\text{th}$ percentile and the third quartile is the $75\text{th}$ percentile. To calculate the quartiles, use `quantile()` function with specified locations to measure: $Q_1=25\text{th}$ percentile, $Q_2=50\text{th}$ percentile and $Q_3=75\text{th}$ percentile.
+
+##### Exercise:
+
+> -   Find ind the quartiles of the `math_score` , `reading_score` and `writing_score`. Summarize the result in a table.
+
+```{r p-quartile, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(Q_math= quantile(math_score, c(0.25, 0.50, 0.75)), 
+            Q_writing= quantile(writing_score,c(0.25, 0.50, 0.75)), 
+            Q_reading= quantile(reading_score, c(0.25, 0.50, 0.75))) 
+```
+
+-   **Five-number summary:** $(min,Q_1,Q_2,Q_3,max)$ are the five-number summary. `quantile()` function with no specified locations return the five-number summary. Also, `summary()` function provides the five-number summary along with the mean value.
+
+##### Exercise:
+
+> -   Find ind the five number summary of the `math_score` , `reading_score` and `writing_score`. Summarize the result in a table.
+
+```{r p-fivenum, exercise=TRUE, exercise.eval=FALSE}
+### Five Number Summary
+## quantile
+std_perf_exam %>% 
+  summarize(fivenum_math= quantile(math_score), 
+            fivenum_writing= quantile(writing_score), 
+            fivenum_reading= quantile(reading_score))
+```
+
+```{r p-fivenum-hint}
+### Five Number Summary
+## summary()
+std_perf_exam %>% 
+  summarize(fivenum_math= summary(math_score), 
+            fivenum_writing= summary(writing_score), 
+            fivenum_reading= summary(reading_score))
+```
+
+-   **IQR:** Inter-quartile range measures the variation of the middle half of the values, i.e. $IQR=Q_3−Q_1$. Use `IQR()` function to find the inter-quartile range.
+
+##### Exercise:
+
+> -   Find ind the IQR of the `math_score` , `reading_score` and `writing_score`. Summarize the result in a table.
+
+```{r p-IQR, exercise=TRUE, exercise.eval=FALSE}
+std_perf_exam %>% 
+  summarize(IQR_math= IQR(math_score), 
+            IQR_writing= IQR(writing_score), 
+            IQR_reading= IQR(reading_score))
+```
+
+## Discover Statistics: Graphical
+
+Graphs show the distribution of data values and provide a way to determine central values, outliers, spread, patterns in the data. R provides amazing packages and functions for creating and customizing graphs. Here we introduce core graphs such as scatter diagram, histogram and box and whisker plots using R base functions and `ggplot2` package in `tidyverse`.
+
+#### Data Visualization: R Basic Functions
+
+-   **Scatter Plot:** The scatter diagram is used to exploer the relationship between two variables. The basic plot() function is used to draw a scatter diagram.
+
+##### Exercise:
+
+> -   Draw a scatter plot of the `math_score` and `writing_score`.
+
+```{r graph_scatter, exercise=TRUE, exercise.eval=FALSE}
+plot(std_perf_exam$writing_score, std_perf_exam$math_score)
+```
+
+-   **Histogram:** The histogram is used to group numerical data into classes. To construct histogram use `hist()` R base function.
+
+##### Exercise:
+
+> -   Construct a histogram of the `math_score`.
+
+```{r graph_hist, exercise=TRUE, exercise.eval=FALSE}
+hist(std_perf_exam$math_score)
+```
+
+-   **Box and Whisker Plots:** The boxplots display the five-number summary of a set of data. The plot is produced in R using `boxplot()` function.
+
+    ##### Exercise:
+
+    > -   Construct a boxplot of the `math_score`.
+
+    ```{r graph_boxplot, exercise=TRUE, exercise.eval=FALSE}
+    boxplot(std_perf_exam$math_score)
+    ```
+
+    Boxplots are also useful for comparing two or more data sets.
+
+    ##### Exercise:
+
+    > -   Construct a boxplot of the `math_score` by gender
+
+    ```{r graph_mboxplot, exercise=TRUE, exercise.eval=FALSE}
+    boxplot(std_perf_exam$math_score ~ std_perf_exam$gender)
+    ```
+
+#### Customize Graphs:
+
+The graphs can be customized by changing the title, labels, colors, etc. These features can be added inside the hist() function.
+
+##### Exercise:
+
+> -   Draw a scatter plot of the `math_score` and `writing_score`.
+> -   Label the x-axis the label "writing scoret" and the y-axis "math score"
+> -   Colour the points "royalblue" colour.
+> -   Give the graph the title "math scores and writing scores"
+
+```{r cgraph_scatter, exercise=TRUE, exercise.eval=FALSE}
+plot(std_perf_exam$writing_score, std_perf_exam$math_score, 
+     xlab= "writing score", #x-axis label
+     ylab= "math score", #y-axis label
+     col="royalblue", #colour
+     main="math scores and writing scores" # title
+     )
+```
+
+##### Exercise:
+
+> -   Construct a histogram of the `math_score`.
+> -   Label the x-axis the label "math score" and the y-axis "No.of. Students"
+> -   Colour the bars "darkred" colour.
+> -   Give the graph the title "Frequency Distribution of Math Scores"
+
+```{r cgraph_hist, exercise=TRUE, exercise.eval=FALSE}
+hist(std_perf_exam$math_score, 
+     xlab= "math score", #x-axis label
+     ylab= "No.of. Students", #y-axis label
+     col="darkred", #colour
+     main="Frequency Distribution of Math Scores" # title
+     )
+```
+
+##### Exercise:
+
+> -   Construct a boxplot of the `math_score`.
+> -   Label the x-axis the label "math score".
+> -   Colour the box "lightblue4" colour.
+> -   Give the graph the title "Math Scores Distribution"
+
+```{r cgraph_box, exercise=TRUE, exercise.eval=FALSE}
+boxplot(std_perf_exam$math_score, 
+     ylab= "math score", #y-axis label
+     col="lightblue4", #colour
+     main="Math Scores Distribution" # title
+     )
+```
+
+> **Example:** Construct a multip boxplot of the `math_Score` variable by `gender`. Colour the boxes "violetred4" and "steelblue4".
+
+```{r cgraph_mbox, exercise=TRUE, exercise.eval=FALSE}
+boxplot(std_perf_exam$math_score ~ std_perf_exam$gender,
+     ylab= "math score", #y-axis label
+     xlab="gender", # x-axis label
+     col= c("violetred4","steelblue4"), #colour
+     main="Distribtuion of Math Scores by Gender" # title
+)
+```
+
+## Discover Statistics: Relate
+
+#### Correlation Coefficient:
+
+The correlation coefficient ($r$) is a statistical measure that determines the ***strength of the linear relationship between two variables***. To find the correlation coefficient use `cor()` function.
+
+##### Exercise:
+
+> Compute the value of the linear correlation coefficient for the `math_score` and `writing_score`.
+
+```{r cor-coef, exercise=TRUE, exercise.eval=FALSE}
+cor(std_perf_exam$math_score,std_perf_exam$writing_score)
+```
+
+#### **Test the Significance of the Correlation Coefficient**
+
+$H_0$: There is no correlation between the two variables: $\rho= 0$
+
+$H_1$: There is a nonzero correlation between the two variables: $\rho\neq 0$
+
+To ***assess the significant of the correlation coefficient*** use `cor.test()` function.
+
+##### Exercise:
+
+> Test the significance of the correlation coefficient of the `math_score` and `writing_score`. Use $\alpha=0.05$.
+
+```{r cor-test, exercise=TRUE, exercise.eval=FALSE}
+cor.test(std_perf_exam$math_score,std_perf_exam$writing_score)
+```
+
+p-value $= 2.2\times 10^{-16} \leq 0.05$, indicating there is a significant correlation between the `math_score` and `writing_score.`
+
+#### Linear regression:
+
+The linear regression is a statistical model that uses a straight line to describe the relationship between variables. It finds the line of best fit through data set by searching for the linear equation that minimizes the sum of the squares of the vertical distances from each point to the line. To fit a linear regression model in R, use `lm()` .
+
+##### Exercise:
+
+> Find the ***equation of the regression line*** for the `math_score` and `writing_score`.
+
+```{r fit-line, exercise=TRUE, exercise.eval=FALSE}
+## Fit the linear model 
+## Assign the fitted to an object for further use. 
+fit_model <- lm(math_score ~ writing_score, data=std_perf_exam)
+fit_model 
+```
+
+The equation of the regression line is: writing score $= 0.8009 \times$ math score $+ 11.5831$
+
+> **Example:** Find the ***slope*** value and explain the meaning of it.
+
+Slope = $0.8009$ indicating that a student score in math increases by 0.8009 for an increase of 1 score in writing.
+
+> **Example:** ***Graph the regression line*** on the scatter plot of the data.
+
+```{r best-fit, exercise=TRUE, exercise.eval=FALSE}
+## plot the scatter diagram
+plot(std_perf_exam$math_score, std_perf_exam$writing_score, 
+     xlab="math score", 
+     ylab="writing score", 
+     col="royalblue",
+     main="math score vs writing score")
+## add the fitted linear model to the scatter diagram 
+abline(fit_model)
+```
+
+#### Coefficient of Determination
+
+Coefficient of determination $(r^2)$ gives the proportion of the total variation of dependent variable that is explained by the regression line.
+
+> **Example:** Find and Interpret the *coefficient of determination*.
+
+```{r coef-det, exercise=TRUE, exercise.eval=FALSE}
+summary(fit_model)$r.squared
+```
+
+$r^2=0.6442343$, indicating that about $64\%$ of the variation in the math score can be explained by the regression line using the writing score as an independent variable. More variables should be included in the model to improve the adequacy of the model.
